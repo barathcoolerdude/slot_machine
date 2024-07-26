@@ -21,12 +21,27 @@ def get_slot_machine_spin(rows,cols,symbols):
             all_symbols.append(symbol)
 
     columns=[]
-    for col in range(cols):
+    for _ in range(cols):
         column=[]
-        for row in range(rows):
-            value = random.choice(all_symbols)
-            print(col,row)
+        current_symbols=all_symbols[:]
+        for _ in range(rows):
+            value = random.choice(current_symbols)
+            current_symbols.remove(value)
+            column.append(value)
 
+        columns.append(column)
+
+    return columns
+            
+def print_slot_machine(columns):
+    for row in range(len(columns[0])):
+        for i,column in enumerate(columns):
+            if i != len(columns) - 1:
+                print(column[row],end=" | ")
+            else:
+                print(column[row],end="")
+
+        print()
 def get_deposit():
     while True:
         amount=input("Enter the amount you want to deposit:$ ")
@@ -42,7 +57,7 @@ def get_deposit():
 
 def get_number_of_lines():
     while True:
-        lines=input("enter number of lines you want to bet on: ")
+        lines=input("Enter number of lines you want to bet on: ")
         if lines.isdigit:
             lines=int(lines)
             if 1 <=lines <= MAX_LINE:
@@ -52,7 +67,6 @@ def get_number_of_lines():
         else:
             print("Enter a digit")
     return lines
-
 
 def get_bet():
     while True:
@@ -80,6 +94,6 @@ def main():
         else:
             print(f"your balance is not enough, your balance is ${balance}")
 
-    
-
+    slots=get_slot_machine_spin(ROWS,COLS,symbol_count)
+    print_slot_machine(slots)
 main()
